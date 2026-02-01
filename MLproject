@@ -1,0 +1,4 @@
+name: kz-credits
+docker_env:
+    image: petbanks
+    
