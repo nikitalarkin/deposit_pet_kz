@@ -9,14 +9,49 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - "./docker/db-init:/docker-entrypoint-initdb.d"
 
   app:
     build: .
     environment:
-      DATABASE_URL: postgresql://app:apppass@db:5432/appdb
+      DATABASE_URL: ${DB_URL}/app
     depends_on:
       - db
     command: ["python", "-V"]
+    env_file:
+      - .env
+  
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.14.3
+    depends_on:
+      - db
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    environment:
+      MLFLOW_BACKEND_STORE_URI: ${DB_URL}/mlflow
+      MLFLOW_DEFAULT_ARTIFACT_ROOT: /mlflow/artifacts
+    volumes:
+      - mlflow_artifacts:/mlflow/artifacts
+    command: >
+      bash -lc "pip install -q psycopg2-binary &&
+      mlflow server --host 0.0.0.0 --port 5000"
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@local
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+
 
 volumes:
   pgdata:
+  mlflow_artifacts:
