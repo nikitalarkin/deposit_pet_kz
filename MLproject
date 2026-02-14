@@ -1,11 +1,14 @@
 name: kz-credits
+
 docker_env:
-    image: petbanks
+  image: petbanks-app
+
 entry_points:
   train_kz:
     parameters:
-      db_name: "credits_total_kz"
-      login: "postgres"
-      password: "qwerty123"
-    command: "python3 preprocessing/trainKZ.py --db_name {db_name} --login {login} --password {password}"
- 
+      db_url: {type: string, default: postgresql+psycopg2://postgres:qwerty123@db:5432}
+      db_name: {type: string, default: credits_total_kz}
+      mlflow_uri: {type: string, default: http://mlflow:5000}
+      experiment: {type: string, default: credits_total_kz}
+    command: >
+      python src/train.py
