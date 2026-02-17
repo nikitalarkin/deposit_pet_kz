@@ -8,5 +8,3 @@ RUN PIP_CONFIG_FILE=/dev/null PIP_REQUIRE_HASHES=0 pip install --no-cache-dir -r
 COPY . /app
 
 CMD ["python", "-V"]
-
-

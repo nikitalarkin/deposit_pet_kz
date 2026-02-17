@@ -113,3 +113,4 @@ yarg==0.1.10
 zipp==3.23.0
 nbconvert
 jupyter
+papermill
