@@ -1,5 +1,6 @@
 *.csv
+!raw_data/
+!raw_data/*.csv
 *.xlsx
 /venv
 .env
-!raw_data/*.csv
