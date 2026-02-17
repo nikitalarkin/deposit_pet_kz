@@ -3,3 +3,4 @@
 *.xlsx
 /venv
 .env
+!raw_data/*.csv

@@ -15,4 +15,3 @@ datasets
 *.h5
 *.log
 .DS_Store
-!raw_data/*.csv
